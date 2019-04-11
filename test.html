@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script type="module">
+      import windowMessenger from './index.js';
+      
+      windowMessenger.subscribe((data, channel) => {
+        console.log(data, channel);
+      });
+      windowMessenger.subscribe('test-channel', (data, channel) => {
+        console.log('#test-channel#', data, channel);
+      });
+      windowMessenger.subscribe('*', (data, channel) => {
+        console.log('#*#', data, channel);
+      });
+      window._test = () => {
+        window._kid = windowMessenger.open('./test.html', {
+          text: 'hello moto'
+        });
+      };
+      window._test2 = () => {
+        window.opener && windowMessenger.send(window.opener, {
+          text: 'this is a message from child'
+        });
+      };
+      window._test3 = () => {
+        window.opener && windowMessenger.send(window.opener, {
+          text: 'this is a message from child'
+        }, 'test-channel');
+      }
+      window._test4 = () => {
+        window._kid && windowMessenger.send(window._kid, {
+          text: 'this is a message from child'
+        }, 'test-channel');
+      }
+      window._test5 = () => {
+        window._kid && windowMessenger.send(window._kid, {
+          text: 'this is a message from child'
+        }, Math.random());
+      }
+    </script>
+  </body>
+</html>
