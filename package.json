@@ -1,6 +1,6 @@
 {
   "name": "window-messenger",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Sending messages between windows.",
   "main": "index.js",
   "scripts": {

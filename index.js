@@ -1,5 +1,5 @@
 const windowMessenger = {
-  open(url, data, channel) {
+  open(url, data, channel = '_initialData_') {
     const win = window.open(url, '_blank');
     initWindow(win, data, channel);
 
@@ -49,6 +49,15 @@ const windowMessenger = {
     return () => {
       listeners[channel].delete(sb);
     };
+  },
+  getInitialData() {
+    return new Promise((resolve) => {
+      if (windowMessenger.initialData) {
+        resolve(windowMessenger.initialData);
+      } else {
+        windowMessenger.__initialDataResolver = resolve;
+      }
+    });
   }
 };
 
@@ -107,6 +116,10 @@ function initWindow(win, data, channel) {
     pendingMessages
   });
 }
+windowMessenger.subscribe('_initialData_', (data) => {
+  windowMessenger.initialData = data;
+  windowMessenger.__initialDataResolver && windowMessenger.__initialDataResolver(data);
+});
 // send load message to parent
 window.opener && windowMessenger.send(window.opener, {}, '__loaded');
 

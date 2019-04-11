@@ -38,6 +38,11 @@
           text: 'this is a message from child'
         }, Math.random());
       }
+
+      windowMessenger.getInitialData()
+        .then((ret) => {
+          console.log('initial data got: ', ret);
+        });
     </script>
   </body>
 </html>
